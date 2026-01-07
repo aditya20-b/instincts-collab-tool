@@ -4,8 +4,10 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import DeploymentsSection from "@/components/DeploymentsSection";
 import EnvVariablesSection from "@/components/EnvVariablesSection";
+import QuickLinks from "@/components/QuickLinks";
+import CollaboratorsList from "@/components/CollaboratorsList";
 
-type Tab = "deployments" | "env";
+type Tab = "deployments" | "env" | "team" | "links";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -88,6 +90,8 @@ export default function Home() {
   const tabs: { id: Tab; label: string }[] = [
     { id: "deployments", label: "Deployments" },
     { id: "env", label: "Env Variables" },
+    { id: "team", label: "Team" },
+    { id: "links", label: "Quick Links" },
   ];
 
   // Not authenticated - show login
@@ -313,6 +317,8 @@ export default function Home() {
         <div className="space-y-6">
           {activeTab === "deployments" && <DeploymentsSection />}
           {activeTab === "env" && <EnvVariablesSection />}
+          {activeTab === "team" && <CollaboratorsList />}
+          {activeTab === "links" && <QuickLinks />}
         </div>
 
         {/* Footer */}
