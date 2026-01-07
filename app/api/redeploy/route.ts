@@ -38,7 +38,7 @@ export async function POST() {
     const { data: newCommit } = await octokit.git.createCommit({
       owner,
       repo,
-      message: `chore: trigger redeploy [skip ci]\n\nTriggered via Instincts Collab Tool at ${new Date().toISOString()}`,
+      message: `chore: trigger redeploy\n\nTriggered via Instincts Collab Tool at ${new Date().toISOString()}`,
       tree: commitData.tree.sha,
       parents: [latestCommitSha],
     });
