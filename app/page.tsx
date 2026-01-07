@@ -6,8 +6,10 @@ import DeploymentsSection from "@/components/DeploymentsSection";
 import EnvVariablesSection from "@/components/EnvVariablesSection";
 import QuickLinks from "@/components/QuickLinks";
 import CollaboratorsList from "@/components/CollaboratorsList";
+import DashboardStats from "@/components/DashboardStats";
+import RecentCommits from "@/components/RecentCommits";
 
-type Tab = "deployments" | "env" | "team" | "links";
+type Tab = "deployments" | "env" | "team" | "commits" | "links";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -89,6 +91,7 @@ export default function Home() {
 
   const tabs: { id: Tab; label: string }[] = [
     { id: "deployments", label: "Deployments" },
+    { id: "commits", label: "Commits" },
     { id: "env", label: "Env Variables" },
     { id: "team", label: "Team" },
     { id: "links", label: "Quick Links" },
@@ -294,6 +297,9 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Dashboard Stats */}
+        <DashboardStats />
+
         {/* Tabs */}
         <div className="border-b border-gray-200 mb-6">
           <nav className="flex space-x-8" aria-label="Tabs">
@@ -316,6 +322,7 @@ export default function Home() {
         {/* Tab Content */}
         <div className="space-y-6">
           {activeTab === "deployments" && <DeploymentsSection />}
+          {activeTab === "commits" && <RecentCommits />}
           {activeTab === "env" && <EnvVariablesSection />}
           {activeTab === "team" && <CollaboratorsList />}
           {activeTab === "links" && <QuickLinks />}
