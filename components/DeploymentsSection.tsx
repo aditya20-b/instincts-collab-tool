@@ -145,7 +145,7 @@ export default function DeploymentsSection() {
           <button
             onClick={fetchDeployments}
             disabled={loading}
-            className="text-sm px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
+            className="text-sm px-3 py-1 border border-gray-400 text-gray-700 bg-white rounded-md hover:bg-gray-100 disabled:opacity-50"
           >
             Refresh
           </button>
@@ -215,7 +215,7 @@ export default function DeploymentsSection() {
                 <div className="flex gap-1 ml-2 flex-shrink-0">
                   <button
                     onClick={() => fetchLogs(deployment.id)}
-                    className="text-xs px-2 py-1 border border-gray-300 rounded hover:bg-gray-50"
+                    className="text-xs px-2 py-1 border border-gray-400 text-gray-700 bg-white rounded hover:bg-gray-100"
                   >
                     Logs
                   </button>
@@ -223,7 +223,7 @@ export default function DeploymentsSection() {
                     <button
                       onClick={() => handleRollback(deployment.id)}
                       disabled={actionLoading === deployment.id}
-                      className="text-xs px-2 py-1 border border-orange-300 text-orange-600 rounded hover:bg-orange-50 disabled:opacity-50"
+                      className="text-xs px-2 py-1 border border-orange-400 text-orange-700 bg-white rounded hover:bg-orange-50 disabled:opacity-50"
                     >
                       {actionLoading === deployment.id ? "..." : "Rollback"}
                     </button>
@@ -232,7 +232,7 @@ export default function DeploymentsSection() {
                     href={`https://${deployment.url}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs px-2 py-1 border border-gray-300 rounded hover:bg-gray-50"
+                    className="text-xs px-2 py-1 border border-gray-400 text-gray-700 bg-white rounded hover:bg-gray-100"
                   >
                     Visit
                   </a>

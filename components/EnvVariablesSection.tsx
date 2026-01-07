@@ -139,7 +139,7 @@ export default function EnvVariablesSection() {
           <button
             onClick={fetchEnvs}
             disabled={loading}
-            className="text-sm px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
+            className="text-sm px-3 py-1 border border-gray-400 text-gray-700 bg-white rounded-md hover:bg-gray-100 disabled:opacity-50"
           >
             Refresh
           </button>
@@ -251,7 +251,7 @@ export default function EnvVariablesSection() {
                         setEditingId(null);
                         setEditValue("");
                       }}
-                      className="px-2 py-1 border border-gray-300 rounded text-xs"
+                      className="px-2 py-1 border border-gray-400 text-gray-700 bg-white rounded text-xs hover:bg-gray-100"
                     >
                       Cancel
                     </button>
@@ -266,7 +266,7 @@ export default function EnvVariablesSection() {
                       setEditingId(env.id);
                       setEditValue("");
                     }}
-                    className="text-xs px-2 py-1 border border-gray-300 rounded hover:bg-gray-50"
+                    className="text-xs px-2 py-1 border border-gray-400 text-gray-700 bg-white rounded hover:bg-gray-100"
                   >
                     Edit
                   </button>
