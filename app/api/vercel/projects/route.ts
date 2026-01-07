@@ -10,7 +10,7 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      targetProject: process.env.VERCEL_PROJECT_NAME,
+      targetProject: process.env.TARGET_VERCEL_PROJECT,
       projects: projects.map((p) => ({
         id: p.id,
         name: p.name,

@@ -84,7 +84,7 @@ export interface Project {
 
 // Get project details
 export async function getProject(): Promise<Project> {
-  const projectName = process.env.VERCEL_PROJECT_NAME;
+  const projectName = process.env.TARGET_VERCEL_PROJECT;
   return vercelApi<Project>(`/v9/projects/${projectName}`);
 }
 
@@ -92,7 +92,7 @@ export async function getProject(): Promise<Project> {
 export async function listDeployments(
   limit: number = 10
 ): Promise<{ deployments: Deployment[] }> {
-  const projectName = process.env.VERCEL_PROJECT_NAME;
+  const projectName = process.env.TARGET_VERCEL_PROJECT;
   return vercelApi<{ deployments: Deployment[] }>(
     `/v6/deployments?projectId=${projectName}&limit=${limit}`
   );
@@ -114,7 +114,7 @@ export async function getDeploymentEvents(
 
 // Trigger redeploy by creating a new deployment from the latest
 export async function triggerRedeploy(): Promise<Deployment> {
-  const projectName = process.env.VERCEL_PROJECT_NAME;
+  const projectName = process.env.TARGET_VERCEL_PROJECT;
 
   // Get the latest production deployment
   const { deployments } = await listDeployments(1);
@@ -146,7 +146,7 @@ export async function cancelDeployment(deploymentId: string): Promise<void> {
 export async function rollbackDeployment(
   deploymentId: string
 ): Promise<Deployment> {
-  const projectName = process.env.VERCEL_PROJECT_NAME;
+  const projectName = process.env.TARGET_VERCEL_PROJECT;
 
   return vercelApi<Deployment>(`/v13/deployments`, {
     method: "POST",
@@ -160,7 +160,7 @@ export async function rollbackDeployment(
 
 // List environment variables
 export async function listEnvVariables(): Promise<{ envs: EnvVariable[] }> {
-  const projectName = process.env.VERCEL_PROJECT_NAME;
+  const projectName = process.env.TARGET_VERCEL_PROJECT;
   return vercelApi<{ envs: EnvVariable[] }>(
     `/v10/projects/${projectName}/env`
   );
@@ -168,7 +168,7 @@ export async function listEnvVariables(): Promise<{ envs: EnvVariable[] }> {
 
 // Get a single environment variable (with decrypted value)
 export async function getEnvVariable(envId: string): Promise<EnvVariable> {
-  const projectName = process.env.VERCEL_PROJECT_NAME;
+  const projectName = process.env.TARGET_VERCEL_PROJECT;
   return vercelApi<EnvVariable>(
     `/v1/projects/${projectName}/env/${envId}`
   );
@@ -181,7 +181,7 @@ export async function createEnvVariable(
   target: ("production" | "preview" | "development")[] = ["production", "preview", "development"],
   type: "encrypted" | "plain" = "encrypted"
 ): Promise<EnvVariable> {
-  const projectName = process.env.VERCEL_PROJECT_NAME;
+  const projectName = process.env.TARGET_VERCEL_PROJECT;
   return vercelApi<EnvVariable>(`/v10/projects/${projectName}/env`, {
     method: "POST",
     body: { key, value, target, type },
@@ -194,7 +194,7 @@ export async function updateEnvVariable(
   value: string,
   target?: ("production" | "preview" | "development")[]
 ): Promise<EnvVariable> {
-  const projectName = process.env.VERCEL_PROJECT_NAME;
+  const projectName = process.env.TARGET_VERCEL_PROJECT;
   const body: { value: string; target?: string[] } = { value };
   if (target) body.target = target;
 
@@ -206,7 +206,7 @@ export async function updateEnvVariable(
 
 // Delete environment variable
 export async function deleteEnvVariable(envId: string): Promise<void> {
-  const projectName = process.env.VERCEL_PROJECT_NAME;
+  const projectName = process.env.TARGET_VERCEL_PROJECT;
   await vercelApi(`/v9/projects/${projectName}/env/${envId}`, {
     method: "DELETE",
   });
