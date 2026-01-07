@@ -11,6 +11,8 @@ export async function vercelApi<T>(
 ): Promise<T> {
   const { method = "GET", body } = options;
 
+  console.log(`[VERCEL API] ${method} ${endpoint}`);
+
   const response = await fetch(`${VERCEL_API_BASE}${endpoint}`, {
     method,
     headers: {
@@ -22,12 +24,18 @@ export async function vercelApi<T>(
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));
+    console.error(`[VERCEL API] Error: ${response.status}`, error);
     throw new Error(
       error.error?.message || `Vercel API error: ${response.status}`
     );
   }
 
   return response.json();
+}
+
+// List all projects (for debugging/finding correct project name)
+export async function listProjects(): Promise<{ projects: Project[] }> {
+  return vercelApi<{ projects: Project[] }>(`/v9/projects?limit=100`);
 }
 
 export interface Deployment {

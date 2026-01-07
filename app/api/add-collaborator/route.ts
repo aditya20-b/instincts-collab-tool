@@ -37,6 +37,8 @@ export async function POST() {
       permission: "push",
     });
 
+    console.log(`[ADD COLLABORATOR] User: ${username} added to ${owner}/${repo} at ${new Date().toISOString()}`);
+
     return NextResponse.json({
       success: true,
       message: `Successfully added ${username} as a collaborator. Check your email for the invitation!`,
