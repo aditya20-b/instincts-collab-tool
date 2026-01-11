@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { Octokit } from "@octokit/rest";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const searchParams = request.nextUrl.searchParams;
+    const branch = searchParams.get("branch") || undefined;
+
     const octokit = new Octokit({
       auth: process.env.GITHUB_PAT,
     });
@@ -13,10 +17,11 @@ export async function GET() {
     const { data: commits } = await octokit.repos.listCommits({
       owner,
       repo,
+      sha: branch, // sha parameter accepts branch name
       per_page: 15,
     });
 
-    console.log(`[COMMITS] Fetched ${commits.length} commits`);
+    console.log(`[COMMITS] Fetched ${commits.length} commits for branch: ${branch || "default"}`);
 
     return NextResponse.json({
       success: true,

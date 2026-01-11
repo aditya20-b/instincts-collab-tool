@@ -15,15 +15,63 @@ interface Commit {
   url: string;
 }
 
+interface Branch {
+  name: string;
+  sha: string;
+}
+
+interface Deployment {
+  branch?: string;
+}
+
 export default function RecentCommits() {
   const [commits, setCommits] = useState<Commit[]>([]);
+  const [branches, setBranches] = useState<Branch[]>([]);
+  const [selectedBranch, setSelectedBranch] = useState<string>("");
+  const [latestBuildBranch, setLatestBuildBranch] = useState<string>("main");
   const [loading, setLoading] = useState(true);
+  const [branchesLoading, setBranchesLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchCommits = async () => {
+  // Fetch branches and latest deployment on mount
+  useEffect(() => {
+    const init = async () => {
+      setBranchesLoading(true);
+
+      // Fetch branches and latest deployment in parallel
+      const [branchesRes, deploymentsRes] = await Promise.all([
+        fetch("/api/branches").then(r => r.json()).catch(() => ({ branches: [] })),
+        fetch("/api/vercel/deployments").then(r => r.json()).catch(() => ({ deployments: [] })),
+      ]);
+
+      if (branchesRes.branches) {
+        setBranches(branchesRes.branches);
+      }
+
+      // Get the branch from the latest deployment
+      const latestDeployment = deploymentsRes.deployments?.[0] as Deployment | undefined;
+      const latestBranch = latestDeployment?.branch || "main";
+      setLatestBuildBranch(latestBranch);
+      setSelectedBranch(latestBranch);
+
+      setBranchesLoading(false);
+    };
+
+    init();
+  }, []);
+
+  // Fetch commits when selected branch changes
+  useEffect(() => {
+    if (selectedBranch) {
+      fetchCommits(selectedBranch);
+    }
+  }, [selectedBranch]);
+
+  const fetchCommits = async (branch?: string) => {
     try {
       setLoading(true);
-      const response = await fetch("/api/commits");
+      const url = branch ? `/api/commits?branch=${encodeURIComponent(branch)}` : "/api/commits";
+      const response = await fetch(url);
       const data = await response.json();
 
       if (response.ok) {
@@ -39,10 +87,6 @@ export default function RecentCommits() {
     }
   };
 
-  useEffect(() => {
-    fetchCommits();
-  }, []);
-
   const formatTimeAgo = (dateString: string) => {
     const seconds = Math.floor((Date.now() - new Date(dateString).getTime()) / 1000);
     if (seconds < 60) return "just now";
@@ -55,17 +99,56 @@ export default function RecentCommits() {
     return new Date(dateString).toLocaleDateString();
   };
 
+  const repoOwner = "aditya20-b";
+  const repoName = "instincts-website-2026";
+
   return (
     <div className="bg-white shadow rounded-lg p-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-gray-900">Recent Commits</h2>
         <button
-          onClick={fetchCommits}
+          onClick={() => fetchCommits(selectedBranch)}
           disabled={loading}
           className="text-sm px-3 py-1 border border-gray-400 text-gray-700 bg-white rounded-md hover:bg-gray-100 disabled:opacity-50"
         >
           Refresh
         </button>
+      </div>
+
+      {/* Branch Selector */}
+      <div className="mb-4">
+        <div className="flex items-center gap-2">
+          <label className="text-sm text-gray-600">Branch:</label>
+          {branchesLoading ? (
+            <span className="text-sm text-gray-400">Loading branches...</span>
+          ) : (
+            <select
+              value={selectedBranch}
+              onChange={(e) => setSelectedBranch(e.target.value)}
+              className="px-3 py-1.5 border border-gray-300 rounded-md text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              {branches.map((branch) => (
+                <option key={branch.name} value={branch.name}>
+                  {branch.name}
+                  {branch.name === latestBuildBranch ? " (latest build)" : ""}
+                </option>
+              ))}
+            </select>
+          )}
+          {selectedBranch !== latestBuildBranch && (
+            <button
+              onClick={() => setSelectedBranch(latestBuildBranch)}
+              className="text-xs text-blue-600 hover:text-blue-800"
+            >
+              Reset to latest build
+            </button>
+          )}
+        </div>
+        {selectedBranch === latestBuildBranch && (
+          <p className="text-xs text-gray-500 mt-1">
+            Showing commits from the latest deployed branch
+          </p>
+        )}
       </div>
 
       {loading && commits.length === 0 ? (
@@ -121,12 +204,12 @@ export default function RecentCommits() {
 
       <div className="mt-4 pt-4 border-t border-gray-100">
         <a
-          href="https://github.com/aditya20-b/instincts-website-2026/commits"
+          href={`https://github.com/${repoOwner}/${repoName}/commits/${selectedBranch}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm text-blue-600 hover:text-blue-800"
         >
-          View all commits →
+          View all commits on {selectedBranch} →
         </a>
       </div>
     </div>
