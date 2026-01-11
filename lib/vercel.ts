@@ -211,3 +211,26 @@ export async function deleteEnvVariable(envId: string): Promise<void> {
     method: "DELETE",
   });
 }
+
+// Deploy from a specific branch using gitSource
+export async function deployBranch(
+  branch: string,
+  repoId: number
+): Promise<Deployment> {
+  const projectName = process.env.TARGET_VERCEL_PROJECT;
+
+  console.log(`[VERCEL API] Deploying branch: ${branch} (repoId: ${repoId})`);
+
+  return vercelApi<Deployment>(`/v13/deployments`, {
+    method: "POST",
+    body: {
+      name: projectName,
+      gitSource: {
+        type: "github",
+        ref: branch,
+        repoId: repoId,
+      },
+      target: "preview",
+    },
+  });
+}

@@ -8,8 +8,9 @@ import QuickLinks from "@/components/QuickLinks";
 import CollaboratorsList from "@/components/CollaboratorsList";
 import DashboardStats from "@/components/DashboardStats";
 import RecentCommits from "@/components/RecentCommits";
+import BranchDeploy from "@/components/BranchDeploy";
 
-type Tab = "deployments" | "env" | "team" | "commits" | "links";
+type Tab = "deployments" | "preview" | "env" | "team" | "commits" | "links";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -91,6 +92,7 @@ export default function Home() {
 
   const tabs: { id: Tab; label: string }[] = [
     { id: "deployments", label: "Deployments" },
+    { id: "preview", label: "Branch Preview" },
     { id: "commits", label: "Commits" },
     { id: "env", label: "Env Variables" },
     { id: "team", label: "Team" },
@@ -322,6 +324,7 @@ export default function Home() {
         {/* Tab Content */}
         <div className="space-y-6">
           {activeTab === "deployments" && <DeploymentsSection />}
+          {activeTab === "preview" && <BranchDeploy />}
           {activeTab === "commits" && <RecentCommits />}
           {activeTab === "env" && <EnvVariablesSection />}
           {activeTab === "team" && <CollaboratorsList />}
