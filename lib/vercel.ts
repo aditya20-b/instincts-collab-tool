@@ -221,6 +221,7 @@ export async function deployBranch(
 
   console.log(`[VERCEL API] Deploying branch: ${branch} (repoId: ${repoId})`);
 
+  // Omitting `target` creates a preview deployment by default
   return vercelApi<Deployment>(`/v13/deployments`, {
     method: "POST",
     body: {
@@ -230,7 +231,6 @@ export async function deployBranch(
         ref: branch,
         repoId: repoId,
       },
-      target: "preview",
     },
   });
 }
