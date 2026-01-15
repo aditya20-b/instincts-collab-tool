@@ -9,8 +9,9 @@ import CollaboratorsList from "@/components/CollaboratorsList";
 import DashboardStats from "@/components/DashboardStats";
 import RecentCommits from "@/components/RecentCommits";
 import BranchDeploy from "@/components/BranchDeploy";
+import PageOwnershipSection from "@/components/PageOwnershipSection";
 
-type Tab = "deployments" | "preview" | "env" | "team" | "commits" | "links";
+type Tab = "deployments" | "preview" | "env" | "team" | "commits" | "links" | "pages";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -96,6 +97,7 @@ export default function Home() {
     { id: "commits", label: "Commits" },
     { id: "env", label: "Env Variables" },
     { id: "team", label: "Team" },
+    { id: "pages", label: "Pages" },
     { id: "links", label: "Quick Links" },
   ];
 
@@ -328,6 +330,7 @@ export default function Home() {
           {activeTab === "commits" && <RecentCommits />}
           {activeTab === "env" && <EnvVariablesSection />}
           {activeTab === "team" && <CollaboratorsList />}
+          {activeTab === "pages" && <PageOwnershipSection />}
           {activeTab === "links" && <QuickLinks />}
         </div>
 
