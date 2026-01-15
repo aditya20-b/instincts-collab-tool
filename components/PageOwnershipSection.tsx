@@ -208,7 +208,7 @@ export default function PageOwnershipSection() {
   return (
     <div className="bg-white shadow rounded-lg p-6">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold text-gray-900">Page Ownership</h2>
+        <h2 className="text-xl font-semibold text-gray-900">Feature Ownership</h2>
         <div className="flex gap-2">
           <button
             onClick={fetchPages}
@@ -224,13 +224,13 @@ export default function PageOwnershipSection() {
             }}
             className="text-sm px-3 py-1 bg-purple-600 text-white rounded-md hover:bg-purple-700"
           >
-            {showAddForm ? "Cancel" : "+ Add Page"}
+            {showAddForm ? "Cancel" : "+ Add Feature"}
           </button>
         </div>
       </div>
 
       <p className="text-sm text-gray-500 mb-4">
-        Track who owns which pages and features in the website
+        Map features and pages to team members - track who&apos;s responsible for what
       </p>
 
       {message && (
@@ -247,25 +247,25 @@ export default function PageOwnershipSection() {
 
       {/* Add Form */}
       {showAddForm && (
-        <form onSubmit={handleAddPage} className="mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
-          <h3 className="text-lg font-medium text-gray-900 mb-3">Add New Page</h3>
+        <form onSubmit={handleAddPage} className="mb-6 p-5 border-2 border-purple-200 rounded-lg bg-white shadow-sm">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Add New Feature</h3>
 
-          <div className="mb-3">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Page Name <span className="text-red-500">*</span>
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
+              Feature/Page Name <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               value={newPageName}
               onChange={(e) => setNewPageName(e.target.value)}
-              placeholder="e.g., Landing Page, Navigation, Footer"
+              placeholder="e.g., Landing Page, Navigation Bar, Gallery"
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2.5 text-gray-900 placeholder-gray-400 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             />
           </div>
 
-          <div className="mb-3">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
               Description
             </label>
             <textarea
@@ -273,49 +273,49 @@ export default function PageOwnershipSection() {
               onChange={(e) => setNewPageDescription(e.target.value)}
               placeholder="Brief description of this page/feature"
               rows={2}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2.5 text-gray-900 placeholder-gray-400 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
             />
           </div>
 
-          <div className="mb-3">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
               Select Owners
             </label>
-            <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
+            <div className="grid grid-cols-2 gap-2 max-h-52 overflow-y-auto p-2 bg-gray-50 rounded-md border border-gray-200">
               {collaborators.map((collab) => (
                 <label
                   key={collab.id}
-                  className="flex items-center gap-2 p-2 border border-gray-200 rounded cursor-pointer hover:bg-white"
+                  className="flex items-center gap-2 p-3 bg-white border-2 border-gray-200 rounded-md cursor-pointer hover:border-purple-300 hover:bg-purple-50 transition-colors"
                 >
                   <input
                     type="checkbox"
                     checked={selectedOwners.includes(collab.username)}
                     onChange={() => toggleOwner(collab.username)}
-                    className="rounded text-purple-600 focus:ring-purple-500"
+                    className="w-4 h-4 rounded text-purple-600 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                   />
                   <img
                     src={collab.avatarUrl}
                     alt={collab.username}
-                    className="w-6 h-6 rounded-full"
+                    className="w-7 h-7 rounded-full flex-shrink-0"
                   />
-                  <span className="text-sm text-gray-700">@{collab.username}</span>
+                  <span className="text-sm font-medium text-gray-900 truncate">@{collab.username}</span>
                 </label>
               ))}
             </div>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-3 pt-2">
             <button
               type="submit"
               disabled={submitting || !newPageName}
-              className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:opacity-50"
+              className="px-5 py-2.5 bg-purple-600 text-white font-medium rounded-md hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {submitting ? "Adding..." : "Add Page"}
+              {submitting ? "Adding..." : "Add Feature"}
             </button>
             <button
               type="button"
               onClick={() => setShowAddForm(false)}
-              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+              className="px-5 py-2.5 border-2 border-gray-300 text-gray-700 font-medium rounded-md hover:bg-gray-50 transition-colors"
             >
               Cancel
             </button>
@@ -325,73 +325,73 @@ export default function PageOwnershipSection() {
 
       {/* Edit Form */}
       {editingPage && (
-        <form onSubmit={handleEditPage} className="mb-6 p-4 border border-purple-200 rounded-lg bg-purple-50">
-          <h3 className="text-lg font-medium text-gray-900 mb-3">Edit Page</h3>
+        <form onSubmit={handleEditPage} className="mb-6 p-5 border-2 border-purple-300 rounded-lg bg-purple-50 shadow-sm">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Edit Feature</h3>
 
-          <div className="mb-3">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Page Name <span className="text-red-500">*</span>
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
+              Feature/Page Name <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               value={editName}
               onChange={(e) => setEditName(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2.5 text-gray-900 placeholder-gray-400 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white"
             />
           </div>
 
-          <div className="mb-3">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
               Description
             </label>
             <textarea
               value={editDescription}
               onChange={(e) => setEditDescription(e.target.value)}
               rows={2}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2.5 text-gray-900 placeholder-gray-400 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none bg-white"
             />
           </div>
 
-          <div className="mb-3">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
               Select Owners
             </label>
-            <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
+            <div className="grid grid-cols-2 gap-2 max-h-52 overflow-y-auto p-2 bg-white rounded-md border border-purple-200">
               {collaborators.map((collab) => (
                 <label
                   key={collab.id}
-                  className="flex items-center gap-2 p-2 border border-gray-200 rounded cursor-pointer hover:bg-white"
+                  className="flex items-center gap-2 p-3 bg-white border-2 border-gray-200 rounded-md cursor-pointer hover:border-purple-300 hover:bg-purple-50 transition-colors"
                 >
                   <input
                     type="checkbox"
                     checked={editOwners.includes(collab.username)}
                     onChange={() => toggleOwner(collab.username, true)}
-                    className="rounded text-purple-600 focus:ring-purple-500"
+                    className="w-4 h-4 rounded text-purple-600 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                   />
                   <img
                     src={collab.avatarUrl}
                     alt={collab.username}
-                    className="w-6 h-6 rounded-full"
+                    className="w-7 h-7 rounded-full flex-shrink-0"
                   />
-                  <span className="text-sm text-gray-700">@{collab.username}</span>
+                  <span className="text-sm font-medium text-gray-900 truncate">@{collab.username}</span>
                 </label>
               ))}
             </div>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-3 pt-2">
             <button
               type="submit"
               disabled={submitting || !editName}
-              className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:opacity-50"
+              className="px-5 py-2.5 bg-purple-600 text-white font-medium rounded-md hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {submitting ? "Saving..." : "Save Changes"}
             </button>
             <button
               type="button"
               onClick={() => setEditingPage(null)}
-              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+              className="px-5 py-2.5 border-2 border-gray-300 text-gray-700 font-medium rounded-md hover:bg-gray-50 transition-colors"
             >
               Cancel
             </button>
@@ -400,62 +400,62 @@ export default function PageOwnershipSection() {
       )}
 
       {loading ? (
-        <div className="text-gray-500 text-center py-8">Loading pages...</div>
+        <div className="text-gray-500 text-center py-8">Loading features...</div>
       ) : error ? (
         <div className="text-red-600 text-center py-8">{error}</div>
       ) : pages.length === 0 ? (
         <div className="text-gray-500 text-center py-8">
-          No pages yet. Click &quot;Add Page&quot; to get started!
+          No features mapped yet. Click &quot;Add Feature&quot; to start tracking ownership!
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-4">
           {pages.map((page) => (
             <div
               key={page.id}
-              className="p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all"
+              className="p-5 border-2 border-gray-200 rounded-lg hover:border-purple-200 hover:shadow-md transition-all bg-white"
             >
-              <div className="flex justify-between items-start mb-2">
+              <div className="flex justify-between items-start mb-3">
                 <div className="flex-1">
-                  <h3 className="text-lg font-medium text-gray-900">{page.name}</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">{page.name}</h3>
                   {page.description && (
-                    <p className="text-sm text-gray-600 mt-1">{page.description}</p>
+                    <p className="text-sm text-gray-700 mt-1.5 leading-relaxed">{page.description}</p>
                   )}
                 </div>
-                <div className="flex gap-2 ml-4">
+                <div className="flex gap-2 ml-4 flex-shrink-0">
                   <button
                     onClick={() => startEdit(page)}
                     disabled={submitting}
-                    className="text-sm px-3 py-1 text-purple-600 hover:bg-purple-50 rounded-md disabled:opacity-50"
+                    className="text-sm px-3 py-1.5 text-purple-600 font-medium hover:bg-purple-50 rounded-md disabled:opacity-50 transition-colors border border-transparent hover:border-purple-200"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDeletePage(page)}
                     disabled={submitting}
-                    className="text-sm px-3 py-1 text-red-600 hover:bg-red-50 rounded-md disabled:opacity-50"
+                    className="text-sm px-3 py-1.5 text-red-600 font-medium hover:bg-red-50 rounded-md disabled:opacity-50 transition-colors border border-transparent hover:border-red-200"
                   >
                     Delete
                   </button>
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-2 mt-3">
+              <div className="flex flex-wrap gap-2 mt-4">
                 {page.owners.length === 0 ? (
-                  <span className="text-sm text-gray-400 italic">No owners assigned</span>
+                  <span className="text-sm text-gray-500 italic">No owners assigned</span>
                 ) : (
                   page.owners.map((owner) => (
                     <div
                       key={owner.username}
-                      className="flex items-center gap-2 px-3 py-1 bg-purple-50 border border-purple-200 rounded-full"
+                      className="flex items-center gap-2 px-3 py-1.5 bg-purple-50 border-2 border-purple-200 rounded-full hover:bg-purple-100 transition-colors"
                     >
                       {owner.avatarUrl && (
                         <img
                           src={owner.avatarUrl}
                           alt={owner.username}
-                          className="w-5 h-5 rounded-full"
+                          className="w-6 h-6 rounded-full flex-shrink-0"
                         />
                       )}
-                      <span className="text-sm font-medium text-purple-900">
+                      <span className="text-sm font-semibold text-purple-900">
                         @{owner.username}
                       </span>
                     </div>
@@ -463,8 +463,8 @@ export default function PageOwnershipSection() {
                 )}
               </div>
 
-              <div className="mt-3 pt-3 border-t border-gray-100 text-xs text-gray-400">
-                Updated {new Date(page.updatedAt).toLocaleDateString()}
+              <div className="mt-4 pt-3 border-t border-gray-200 text-xs text-gray-500 font-medium">
+                Last updated {new Date(page.updatedAt).toLocaleDateString()}
               </div>
             </div>
           ))}
@@ -473,7 +473,7 @@ export default function PageOwnershipSection() {
 
       <div className="mt-4 pt-4 border-t border-gray-100">
         <p className="text-xs text-gray-400">
-          Total: {pages.length} page{pages.length !== 1 ? "s" : ""}
+          Total: {pages.length} feature{pages.length !== 1 ? "s" : ""} mapped
         </p>
       </div>
     </div>

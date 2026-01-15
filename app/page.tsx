@@ -97,7 +97,7 @@ export default function Home() {
     { id: "commits", label: "Commits" },
     { id: "env", label: "Env Variables" },
     { id: "team", label: "Team" },
-    { id: "pages", label: "Pages" },
+    { id: "pages", label: "Ownership" },
     { id: "links", label: "Quick Links" },
   ];
 
